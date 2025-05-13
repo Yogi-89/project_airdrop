@@ -1,0 +1,27 @@
+{
+  "name": "airdrop-manager",
+  "version": "1.0.0",
+  "description": "Multi-account airdrop manager dengan perlindungan anti-Sybil",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^29.0.0",
+    "puppeteer": "^22.0.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "electron-store": "^8.1.0",
+    "uuid": "^9.0.1",
+    "axios": "^1.6.2",
+    "proxy-chain": "^2.3.0",
+    "random-useragent": "^0.5.0",
+    "winston": "^3.11.0",
+    "nedb": "^1.8.0",
+    "crypto-js": "^4.2.0",
+    "node-schedule": "^2.1.1"
+  }
+}

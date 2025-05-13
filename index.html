@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Airdrop Manager</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./src/renderer/styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Airdrop Manager</h1>
+      <div class="tab-navigation">
+        <button id="nav-dashboard" class="tab-btn active">Dashboard</button>
+        <button id="nav-accounts" class="tab-btn">Akun</button>
+        <button id="nav-proxies" class="tab-btn">Proxies</button>
+        <button id="nav-settings" class="tab-btn">Pengaturan</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Dashboard Tab -->
+      <section id="dashboard" class="tab-content active">
+        <div class="card">
+          <h2>Tambah Project Baru</h2>
+          <form id="project-form">
+            <div class="form-group">
+              <label for="project-url">Link Project Airdrop:</label>
+              <input type="url" id="project-url" required placeholder="https://example.com">
+            </div>
+            
+            <div class="form-group">
+              <label for="account-count">Jumlah Akun:</label>
+              <input type="number" id="account-count" min="1" max="100" value="1">
+            </div>
+            
+            <div class="form-group">
+              <label for="referral-code">Kode Referral (opsional):</label>
+              <input type="text" id="referral-code" placeholder="Masukkan kode referral jika ada">
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="btn primary">Mulai Task</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>Status Task</h2>
+          <div class="task-list" id="task-list">
+            <!-- Tasks will be populated here -->
+            <div class="empty-state">Belum ada task yang berjalan</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Points Tracking</h2>
+          <div class="points-container" id="points-container">
+            <!-- Points by project will be populated here -->
+            <div class="empty-state">Belum ada data points</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Accounts Tab -->
+      <section id="accounts" class="tab-content">
+        <div class="card">
+          <h2>Kelola Akun</h2>
+          <div class="actions-bar">
+            <button id="add-account" class="btn">+ Tambah Akun</button>
+            <button id="import-accounts" class="btn">Import CSV</button>
+          </div>
+          
+          <div class="accounts-list" id="accounts-list">
+            <!-- Accounts will be populated here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Proxies Tab -->
+      <section id="proxies" class="tab-content">
+        <div class="card">
+          <h2>Residential Proxies</h2>
+          <form id="proxy-form">
+            <div class="form-group">
+              <label for="proxy-address">Alamat Proxy:</label>
+              <input type="text" id="proxy-address" placeholder="ip:port">
+            </div>
+            
+            <div class="form-group">
+              <label for="proxy-username">Username (jika diperlukan):</label>
+              <input type="text" id="proxy-username" placeholder="username">
+            </div>
+            
+            <div class="form-group">
+              <label for="proxy-password">Password (jika diperlukan):</label>
+              <input type="password" id="proxy-password" placeholder="password">
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn primary">Tambah Proxy</button>
+            </div>
+          </form>
+          
+          <div class="proxy-list" id="proxy-list">
+            <!-- Proxies will be populated here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings Tab -->
+      <section id="settings" class="tab-content">
+        <div class="card">
+          <h2>Pengaturan Anti-Sybil</h2>
+          <form id="anti-sybil-form">
+            <div class="form-group">
+              <label for="min-delay">Minimal Delay Antar Aksi (detik):</label>
+              <input type="number" id="min-delay" min="1" value="5">
+            </div>
+            
+            <div class="form-group">
+              <label for="max-delay">Maksimal Delay Antar Aksi (detik):</label>
+              <input type="number" id="max-delay" min="5" value="30">
+            </div>
+            
+            <div class="form-group">
+              <label>Strategi Proxy:</label>
+              <div class="radio-group">
+                <input type="radio" id="proxy-per-account" name="proxy-strategy" value="account" checked>
+                <label for="proxy-per-account">Satu proxy per akun</label>
+              </div>
+              <div class="radio-group">
+                <input type="radio" id="proxy-rotation" name="proxy-strategy" value="rotation">
+                <label for="proxy-rotation">Rotasi proxy</label>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="fingerprint-level">Level Randomisasi Fingerprint:</label>
+              <select id="fingerprint-level">
+                <option value="low">Rendah - Hanya User-Agent</option>
+                <option value="medium" selected>Sedang - User-Agent + Canvas/WebGL</option>
+                <option value="high">Tinggi - Semua Parameter</option>
+              </select>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn primary">Simpan Pengaturan</button>
+            </div>
+          </form>
+        </div>
+        
+        <div class="card">
+          <h2>Pengaturan Browser</h2>
+          <form id="browser-settings-form">
+            <div class="form-group">
+              <label for="browser-memory">Batas Memori Per Browser (MB):</label>
+              <input type="number" id="browser-memory" min="256" value="512">
+            </div>
+            
+            <div class="form-group">
+              <label for="max-concurrent">Maksimal Browser Bersamaan:</label>
+              <input type="number" id="max-concurrent" min="1" max="50" value="5">
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn primary">Simpan Pengaturan</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal untuk tambah/edit akun -->
+  <div id="account-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Tambah Akun</h2>
+      <form id="account-form">
+        <div class="form-group">
+          <label for="account-email">Email/Username:</label>
+          <input type="text" id="account-email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="account-password">Password:</label>
+          <input type="password" id="account-password" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="account-notes">Catatan (opsional):</label>
+          <textarea id="account-notes"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Simpan</button>
+          <button type="button" class="btn" id="cancel-account">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="./src/renderer/app.js"></script>
+</body>
+</html>
